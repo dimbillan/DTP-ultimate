@@ -1,0 +1,20 @@
+{% extends "base/base.html" %}
+
+{% block title %}Derslerim{% endblock %}
+
+{% block content %}
+<div>
+    <h1>Ders Ekle</h1>
+    <form method="POST" action = "{{ url_for('courses.add_course') }}">
+        <div class="mb-3">
+            <label for="code" class="form-label">Ders Kodu</label>
+            <input type="text" class="form-control" id="code" name="code">
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">Ders Adı</label>
+            <input type="text" class="form-control" id="name" name="name">
+        </div>
+        <button type="submit" class="btn btn-primary">Ders Ekle</button>
+    </form>
+</div>
+{% endblock %}

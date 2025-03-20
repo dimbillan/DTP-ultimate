@@ -1,0 +1,93 @@
+{% extends "base/base.html" %}
+
+{% block title %}Ana Sayfa - Öğrenci Devamsızlık Takip Sistemi{% endblock %}
+
+{% block content %}
+<div class="row align-items-center">
+    <div class="col-md-6">
+        <h1 class="display-4 fw-bold mb-4">Devamsızlıklarınızı kolayca takip edin</h1>
+        <p class="lead mb-4">Öğrenci Devamsızlık Takip Sistemi ile devamsızlıklarınızı kolayca kaydedebilir, istatistiklerinizi görüntüleyebilir ve derslerdeki durumunuzu kontrol edebilirsiniz.</p>
+        
+        {% if not current_user.is_authenticated %}
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4">
+            <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg px-4 me-md-2">Giriş Yap</a>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-outline-primary btn-lg px-4">Kayıt Ol</a>
+        </div>
+        {% else %}
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4">
+            <a href="{{ url_for('core.dashboard') }}" class="btn btn-primary btn-lg px-4 me-md-2">Dashboard</a>
+            <a href="{{ url_for('attendance.add_absence') }}" class="btn btn-outline-primary btn-lg px-4">Devamsızlık Ekle</a>
+        </div>
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <img src="{{ url_for('static', filename='images/db-blue.svg') }}" class="img-fluid" alt="Devamsızlık Takip İllüstrasyonu">
+    </div>
+</div>
+
+<hr class="my-5">
+
+<div class="row g-4 py-4">
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center p-4">
+                <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                    <i class="fas fa-calendar-plus fa-2x p-3"></i>
+                </div>
+                <h3 class="card-title">Kolay Devamsızlık Kaydı</h3>
+                <p class="card-text">Birkaç tıklama ile devamsızlıklarınızı kaydedebilir ve güncel tutabilirsiniz.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center p-4">
+                <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                    <i class="fas fa-chart-pie fa-2x p-3"></i>
+                </div>
+                <h3 class="card-title">Görsel İstatistikler</h3>
+                <p class="card-text">Derslerinize göre devamsızlık oranlarınızı görsel grafiklerle analiz edin.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center p-4">
+                <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                    <i class="fas fa-bell fa-2x p-3"></i>
+                </div>
+                <h3 class="card-title">Hatırlatmalar</h3>
+                <p class="card-text">Kritik devamsızlık seviyelerine yaklaştığınızda otomatik hatırlatmalar alın.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light p-5 rounded-3 my-5">
+    <div class="row align-items-center">
+        <div class="col-lg-8">
+            <h2>Nasıl Kullanılır?</h2>
+            <p class="lead">Sistemimizi kullanmak oldukça basit:</p>
+            <ol class="list-group list-group-numbered mb-4">
+                <li class="list-group-item">Hesap oluşturun ve fakülte/bölüm bilgilerinizi girin</li>
+                <li class="list-group-item">Kaçırdığınız dersleri sisteme ekleyin</li>
+                <li class="list-group-item">İstatistikler sayfasından durumunuzu görüntüleyin</li>
+            </ol>
+            {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('auth.register') }}" class="btn btn-success">Hemen Kayıt Ol</a>
+            {% endif %}
+        </div>
+        <div class="col-lg-4">
+            <div class="d-flex justify-content-center">
+                <div class="p-3 bg-white rounded shadow-sm">
+                    <div class="text-center">
+                        <i class="fas fa-graduation-cap fa-4x text-primary mb-3"></i>
+                        <h4>Öğrenci Dostu</h4>
+                        <p class="mb-0 text-muted">Tüm ihtiyaçlarınız için tasarlandı</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

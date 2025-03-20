@@ -1,0 +1,59 @@
+{% extends "base/base.html" %}
+
+{% block title %}Giriş Yap - Öğrenci Devamsızlık Takip Sistemi{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="card-title mb-0">
+                    <i class="fas fa-sign-in-alt me-2"></i>Giriş Yap
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('auth.login') }}">
+                    {{ form.csrf_token }}
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Adresi</label>
+                        {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else ""), placeholder="email@example.com", id="email") }}
+                        {% if form.email.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.email.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Şifre</label>
+                        {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else ""), id="password") }}
+                        {% if form.password.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center py-3">
+                <div class="small">
+                    <a href="{{ url_for('auth.reset_password') }}" class="text-decoration-none">Şifremi unuttum</a>
+                </div>
+                <div class="small mt-2">
+                    Hesabınız yok mu? <a href="{{ url_for('auth.register') }}" class="text-decoration-none">Kayıt olun</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

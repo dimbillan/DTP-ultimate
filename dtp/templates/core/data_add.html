@@ -1,0 +1,188 @@
+{% extends "base/base.html" %}
+
+{% block title %}Ana Sayfa - Öğrenci Devamsızlık Takip Sistemi{% endblock %}
+
+{% block content %}
+    <h1>Eğitim Kurumu Veri Girişi</h1>
+
+    <!-- Üniversite Ekleme Formu -->
+    <div>
+        <h2>Üniversite Ekle</h2>
+        <form id="universityForm" action="{{ url_for('management.add_university') }}" method="POST">
+            <div>
+                <label for="universityName">Üniversite Adı:</label>
+                <input type="text" id="universityName" name="name" required>
+            </div>
+            <button type="submit">Üniversite Ekle</button>
+        </form>
+    </div>
+
+    <!-- Fakülte Ekleme Formu -->
+    <div>
+        <h2>Fakülte Ekle</h2>
+        <form id="facultyForm" action="{{ url_for('management.add_faculty') }}" method="POST">
+            <div>
+                <label for="facultyName">Fakülte Adı:</label>
+                <input type="text" id="facultyName" name="name" required>
+            </div>
+            <div>
+                <label for="universitySelect">Üniversite:</label>
+                <select id="universitySelect" name="university_id" required>
+                    <option value="">Üniversite Seçin</option>
+                    {% for university in universities %}
+                    <option value="{{ university.id }}">{{ university.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit">Fakülte Ekle</button>
+        </form>
+    </div>
+
+    <!-- Bölüm Ekleme Formu -->
+    <div>
+        <h2>Bölüm Ekle</h2>
+        <form id="departmentForm" action="{{ url_for('management.add_department') }}" method="POST">
+            <div>
+                <label for="departmentName">Bölüm Adı:</label>
+                <input type="text" id="departmentName" name="name" required>
+            </div>
+            <div>
+                <label for="universitySelectForDept">Üniversite:</label>
+                <select id="universitySelectForDept" required>
+                    <option value="">Üniversite Seçin</option>
+                    {% for university in universities %}
+                    <option value="{{ university.id }}">{{ university.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="facultySelect">Fakülte:</label>
+                <select id="facultySelect" name="faculty_id" required>
+                    <option value="">Önce Üniversite Seçin</option>
+                </select>
+            </div>
+            <button type="submit">Bölüm Ekle</button>
+        </form>
+    </div>
+
+    <!-- Sınıf Ekleme Formu -->
+    <div>
+        <h2>Sınıf Ekle</h2>
+        <form id="classForm" action="{{ url_for('management.add_class') }}" method="POST">
+            <div>
+                <label for="classYear">Sınıf Yılı:</label>
+                <select id="classYear" name="year" required>
+                    <option value="">Sınıf Seçin</option>
+                    <option value="1">1. Sınıf</option>
+                    <option value="2">2. Sınıf</option>
+                    <option value="3">3. Sınıf</option>
+                    <option value="4">4. Sınıf</option>
+                </select>
+            </div>
+            <div>
+                <label for="universitySelectForClass">Üniversite:</label>
+                <select id="universitySelectForClass" required>
+                    <option value="">Üniversite Seçin</option>
+                    {% for university in universities %}
+                    <option value="{{ university.id }}">{{ university.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="facultySelectForClass">Fakülte:</label>
+                <select id="facultySelectForClass" required>
+                    <option value="">Önce Üniversite Seçin</option>
+                </select>
+            </div>
+            <div>
+                <label for="departmentSelect">Bölüm:</label>
+                <select id="departmentSelect" name="department_id" required>
+                    <option value="">Önce Fakülte Seçin</option>
+                </select>
+            </div>
+            <button type="submit">Sınıf Ekle</button>
+        </form>
+    </div>
+
+    <script>
+        // Üniversite seçildiğinde fakülteleri getiren fonksiyon (Fakülte formu için)
+        document.getElementById('universitySelect').addEventListener('change', function() {
+            const universityId = this.value;
+            if (!universityId) return;
+            
+            fetch(`/get_faculties/${universityId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const facultySelect = document.getElementById('facultySelect');
+                    facultySelect.innerHTML = '<option value="">Fakülte Seçin</option>';
+                    
+                    data.forEach(faculty => {
+                        const option = document.createElement('option');
+                        option.value = faculty.id;
+                        option.textContent = faculty.name;
+                        facultySelect.appendChild(option);
+                    });
+                });
+        });
+        
+        // Üniversite seçildiğinde fakülteleri getiren fonksiyon (Bölüm formu için)
+        document.getElementById('universitySelectForDept').addEventListener('change', function() {
+            const universityId = this.value;
+            if (!universityId) return;
+            
+            fetch(`/get_faculties/${universityId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const facultySelect = document.getElementById('facultySelect');
+                    facultySelect.innerHTML = '<option value="">Fakülte Seçin</option>';
+                    
+                    data.forEach(faculty => {
+                        const option = document.createElement('option');
+                        option.value = faculty.id;
+                        option.textContent = faculty.name;
+                        facultySelect.appendChild(option);
+                    });
+                });
+        });
+        
+        // Üniversite seçildiğinde fakülteleri getiren fonksiyon (Sınıf formu için)
+        document.getElementById('universitySelectForClass').addEventListener('change', function() {
+            const universityId = this.value;
+            if (!universityId) return;
+            
+            fetch(`/get_faculties/${universityId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const facultySelect = document.getElementById('facultySelectForClass');
+                    facultySelect.innerHTML = '<option value="">Fakülte Seçin</option>';
+                    
+                    data.forEach(faculty => {
+                        const option = document.createElement('option');
+                        option.value = faculty.id;
+                        option.textContent = faculty.name;
+                        facultySelect.appendChild(option);
+                    });
+                });
+        });
+        
+        // Fakülte seçildiğinde bölümleri getiren fonksiyon (Sınıf formu için)
+        document.getElementById('facultySelectForClass').addEventListener('change', function() {
+            const facultyId = this.value;
+            if (!facultyId) return;
+            
+            fetch(`/get_departments/${facultyId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const departmentSelect = document.getElementById('departmentSelect');
+                    departmentSelect.innerHTML = '<option value="">Bölüm Seçin</option>';
+                    
+                    data.forEach(department => {
+                        const option = document.createElement('option');
+                        option.value = department.id;
+                        option.textContent = department.name;
+                        departmentSelect.appendChild(option);
+                    });
+                });
+        });
+    </script>
+{% endblock %}

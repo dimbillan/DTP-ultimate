@@ -1,0 +1,22 @@
+.nav-link.active {
+    background-color: rgba(0, 123, 255, 0.1);
+    border-radius: 5px;
+}
+.dashboard-card {
+    transition: transform 0.3s;
+}
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+.absence-item {
+    border-left: 4px solid transparent;
+}
+.absence-pending {
+    border-left-color: #ffc107;
+}
+.absence-approved {
+    border-left-color: #28a745;
+}
+.absence-rejected {
+    border-left-color: #dc3545;
+}

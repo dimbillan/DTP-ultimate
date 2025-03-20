@@ -1,0 +1,37 @@
+{% extends "base/base.html" %}
+
+{% block title %}Derslerim{% endblock %}
+
+{% block content %}
+
+{% if not courses %}
+<div class="alert alert-info" role="alert">
+    Henüz hiç ders eklenmemiş. Ders eklemek için <a href="{{ url_for('courses.add_course')}}" class="alert-link">buraya tıklayın</a>.
+</div>
+{% else %}
+<div class="row g-4 py-4">
+    {% for course in courses %}
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center p-4">
+                <h3 class="card-title">{{ course.code }}</h3>
+                <p class="card-text">{{ course.name }}</p>
+                <a href="#" class="btn btn-primary">Devamsızlık Ekle</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- add courses adding seciton-->
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center p-4">
+                <h3 class="card-title">Ders Ekle</h3>
+                <p class="card-text">Yeni bir ders eklemek için aşağıdaki butona tıklayın.</p>
+                <a href="{{ url_for(course.add_course)}}" class="btn btn-primary">Ders Ekle</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
