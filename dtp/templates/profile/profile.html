@@ -1,0 +1,24 @@
+{%extends "base/base.html"%}
+{%block content%}
+    <div class="container">
+        <h1>Profile</h1>
+        <div class="row">
+            <div class="col-md-6">
+                {%if current_user.is_authenticated%}
+                <p><strong>İsim: </strong> {{current_user.first_name}} {{current_user.last_name}}</p>
+                <p><strong>Eposta: </strong> {{current_user.email}}</p>
+                <p><strong>Öğrenci Numarası: </strong> {{current_user.student_number}}</p>
+                <p><strong>Üniversite: </strong> {{current_user.university.name}}</p>
+                <p><strong>Fakülte: </strong> {{current_user.faculty.name}}</p>
+                <p><strong>Bölüm: </strong> {{current_user.department.name}}</p>
+                <p><strong>Sınıf: </strong> {{current_user.class_relation.year}}</p>
+                <p><strong>Hesap oluşturma tarihi: </strong>{{current_user.created_at.strftime("%Y-%m-%d %H:%M:%S") }}</p>
+                <a href="{{ url_for('profile.edit') }}" class="btn btn-primary">Profilinizi düzenleyin</a>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-danger">Çıkış Yap</a>
+                {% else %}
+                <p><strong>Profilinizi görüntülemek için önce giriş yapın.</strong></p>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Giriş Yap</a>
+                {%endif%}
+    </div>
+{%endblock%}
+

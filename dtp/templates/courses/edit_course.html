@@ -3,7 +3,7 @@
 <div class="content-section">
     <div class="card">
         <div class="card-header">
-            <h2>Add New Course</h2>
+            <h2>Edit Course</h2>
         </div>
         <div class="card-body">
             <form method="POST" action="">
@@ -124,12 +124,9 @@
                         facultySelect.appendChild(option);
                     });
                     
-                    // If there's a previously selected faculty, select it
-                    var preselectedFacultyId = "{{ form.faculty_id.data if form.faculty_id.data is not none else '' }}";
-                    if (preselectedFacultyId) {
-                        facultySelect.value = preselectedFacultyId;
-                        loadDepartments();
-                    }
+                    // Since this is edit, always select the current faculty
+                    facultySelect.value = "{{ form.faculty_id.data }}";
+                    loadDepartments();
                 })
                 .catch(error => console.error('Error loading faculties:', error));
         }
@@ -138,10 +135,10 @@
         function loadDepartments() {
             const facultyId = facultySelect.value;
             if (!facultyId) return;
-    
+            
             departmentSelect.innerHTML = '<option value="">Loading...</option>';
             classSelect.innerHTML = '<option value="">Select Class</option>';
-    
+            
             fetch(`{{ url_for('courses.get_departments', faculty_id=0) }}`.replace('0', facultyId))
                 .then(response => response.json())
                 .then(data => {
@@ -152,13 +149,10 @@
                         option.textContent = department.name;
                         departmentSelect.appendChild(option);
                     });
-    
-                    // If there's a previously selected department, select it
-                    const preselectedDepartmentId = "{{ form.department_id.data | default('') }}";
-                    if (preselectedDepartmentId) {
-                        departmentSelect.value = preselectedDepartmentId;
-                        loadClasses();
-                    }
+                    
+                    // Since this is edit, always select the current department
+                    departmentSelect.value = "{{ form.department_id.data }}";
+                    loadClasses();
                 })
                 .catch(error => console.error('Error loading departments:', error));
         }
@@ -181,11 +175,8 @@
                         classSelect.appendChild(option);
                     });
                     
-                    // If there's a previously selected class, select it
-                    const preselectedClassId = "{{ form.class_id.data | default('') }}";
-                    if (preselectedClassId) {
-                        classSelect.value = preselectedClassId;
-                    }
+                    // Since this is edit, always select the current class
+                    classSelect.value = "{{ form.class_id.data }}";
                 })
                 .catch(error => console.error('Error loading classes:', error));
         }
@@ -195,10 +186,8 @@
         facultySelect.addEventListener('change', loadDepartments);
         departmentSelect.addEventListener('change', loadClasses);
         
-        // Load initial data if university is already selected
-        if (universitySelect.value) {
-            loadFaculties();
-        }
+        // Load initial data since we're editing an existing record
+        loadFaculties();
     });
 </script>
 {% endblock %}

@@ -22,7 +22,7 @@ mail = Mail(app)
 logger = setup_logger()
 
 login_manager = LoginManager(app)
-login_manager.login_view = 'students.login'
+login_manager.login_view = 'auth.login'
 login_manager.login_message_category = 'info'
 
 from dtp.attendance import attendance
